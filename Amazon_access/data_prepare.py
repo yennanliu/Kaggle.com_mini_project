@@ -48,10 +48,16 @@ def data_clean(df):
 ############## data process  ##############
 
 
+def tuned_data():
+    df_train, df_test = load_data()
+    df_train_ = feature_extract(df_train)
+    df_train_ = data_clean(df_train_)
+    print (df_train_.head())
 
 if __name__ == "__main__":
 	#test_data_predict()
-    pass 
+    #pass 
+    tuned_data()
 
 
 
