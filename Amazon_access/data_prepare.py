@@ -5,16 +5,13 @@ import pylab as pl
 import pickle
 
 # ml library 
-from sklearn import svm
-
-
 
 ############## data preparation  ##############
 
 def load_data():
     df_train =  pd.read_csv('train.csv')
-	df_test =  pd.read_csv('test.csv')
-	return df_train, df_test
+    df_test =  pd.read_csv('test.csv')
+    return df_train, df_test
 
 
 def feature_extract(df):
