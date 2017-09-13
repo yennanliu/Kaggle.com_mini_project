@@ -9,8 +9,8 @@ import pickle
 ############## data preparation  ##############
 
 def load_data():
-    df_train =  pd.read_csv('train.csv')
-    df_test =  pd.read_csv('test.csv')
+    df_train =  pd.read_csv('data/train.csv')
+    df_test =  pd.read_csv('data/test.csv')
     return df_train, df_test
 
 

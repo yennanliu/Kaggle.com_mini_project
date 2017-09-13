@@ -28,10 +28,11 @@ def test_data_predict():
     #X_train_, X_test_, y_train_, y_test_ = sample_split(df)		
     # load model 		
     model = load_model()		
-    print (model)		
+    print (model)	
+    #model = model(probability=True)
     # create predict dataframe 		
     df_predict=pd.DataFrame()		
-    df_predict['Action'] = model.predict(df_test.iloc[:,1:])		
+    df_predict['Action'] = model.predict_proba(df_test.iloc[:,1:])[:, 1]		
     df_predict.index.name = 'ID'		
     # make index feat submission form 		
     # https://www.kaggle.com/c/amazoemployeacceschallenge/submit		
