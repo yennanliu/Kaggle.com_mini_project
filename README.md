@@ -2,7 +2,8 @@
 Mini projects of predictive modelling and analytics competitions on [Kaggle](https://www.kaggle.com/)<br>
 
 
-![image](https://github.com/yennanliu/Kaggle.com_mini_project/tree/master/Amazon_access/doc/kaggle.png)
+![image](https://github.com/yennanliu/Kaggle.com_mini_project/blob/master/doc/kaggle.png)
+
 
 
 ## Main Project 
