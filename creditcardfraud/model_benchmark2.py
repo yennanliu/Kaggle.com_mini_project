@@ -32,9 +32,9 @@ def get_under_sample_train_test_data(df):
 	# get the number of  class = 1
 	num_data_fraud = len(df[df.Class == 1 ])
 	# get the index of data labeled as fraud (class = 1 )
-	fraud_indices = np.array(data[data.Class == 1].index)
+	fraud_indices = np.array(df[df.Class == 1].index)
 	# get the index of data labeled as fraud (class = 1 )
-	normal_indices = np.array(data[data.Class == 1].index)
+	normal_indices = np.array(df[df.Class == 1].index)
 	# random select the data  
 	###### can modify here ######
 	random_normal_indices = np.random.choice(normal_indices, num_data_fraud, replace = False)
@@ -51,7 +51,13 @@ def get_under_sample_train_test_data(df):
 	return under_sample_data, X_undersample, y_undersample
 
 
-
+if __name__ == '__main__':
+	df = get_data()
+	# preprocess data 
+	#X,Y = get_train_test_data(df)
+	under_sample_data, X_undersample, y_undersample = get_under_sample_train_test_data(df)
+	print (under_sample_data.head())
+	print (X_undersample.head())
 
 
 
