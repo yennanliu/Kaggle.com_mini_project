@@ -8,7 +8,7 @@ import pandas as pd
 import os
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import average_precision_score, confusion_matrix
-
+from sklearn.cross_validation import train_test_split
 
 
 np.random.seed(7)
@@ -18,14 +18,18 @@ np.random.seed(7)
 
 def get_data():
 	df = pd.read_csv("data/creditcard.csv")
-	return df
-
-
-def get_train_test_data(df):
 	print (df.head())
 	print (df.columns)
 	X = df.ix[:, df.columns != 'Class']
-	Y = df.ix[:, df.columns != 'Class']
+	y = df.ix[:, df.columns != 'Class']
+	return df, X, y 
+
+
+def get_train_test_data(X,y):
+	# Whole dataset
+	X_train, X_test, y_train, y_test = train_test_split(X,y,test_size = 0.3, random_state = 0)
+	return X_train, X_test, y_train, y_test
+
 
 
 def get_under_sample_train_test_data(df):
@@ -51,14 +55,21 @@ def get_under_sample_train_test_data(df):
 	return under_sample_data, X_undersample, y_undersample
 
 
+
+#-----------------------------------
+
+
 if __name__ == '__main__':
-	df = get_data()
+	df, X, y  = get_data()
+	print ('X :', X )
+	print (' y :', y)
 	# preprocess data 
-	#X,Y = get_train_test_data(df)
 	under_sample_data, X_undersample, y_undersample = get_under_sample_train_test_data(df)
-	print (under_sample_data.head())
-	print (X_undersample.head())
-
-
+	#print (under_sample_data.head())
+	#print (X_undersample.head())
+	# get whole X, y data 
+	X_train, X_test, y_train, y_test = get_train_test_data(X,y)
+	# get undersample X, y data 
+	X_train_undersample, X_test_undersample, y_train_undersample, y_test_undersample = get_train_test_data( X_undersample, y_undersample)
 
 
