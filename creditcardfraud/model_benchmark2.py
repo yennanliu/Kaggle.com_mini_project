@@ -171,16 +171,22 @@ if __name__ == '__main__':
 	X_train, X_test, y_train, y_test = get_train_test_data(X,y)
 	# get undersample X, y data 
 	X_train_undersample, X_test_undersample, y_train_undersample, y_test_undersample = get_train_test_data(X_undersample, y_undersample)
+	print ('################ Train With Undersample data ################')
 	# get best super-parameter in logicregression model 
 	c_best = get_best_param_Kfold(X_train_undersample,y_train_undersample)
 	print (c_best)
 	# re-train with best c parameter 
 	y_pred_undersample = logisticregression_model(X_train_undersample,y_train_undersample,X_test_undersample,y_test_undersample,c_best)
-	#lr = LogisticRegression(C = c_best, penalty = 'l1')
-	#lr.fit(X_train_undersample,y_train_undersample.values.ravel())
-	#y_pred_undersample = lr.predict(X_test_undersample.values)
-	# confusion matrix
 	cnf_matrix = confusion_matrix(y_test_undersample,y_pred_undersample)
+	print ('---------------- confusion  matrix ----------------')
+	print (cnf_matrix)
+	print ('################ Train With Whole data ################')
+	# get best super-parameter in logicregression model 
+	c_best_ = get_best_param_Kfold(X_train,y_train)
+	print (c_best_)
+	# re-train with best c parameter 
+	y_pred = logisticregression_model(X_train,y_train,X_test,y_test,c_best_)
+	cnf_matrix = confusion_matrix(y_test,y_pred)
 	print ('---------------- confusion  matrix ----------------')
 	print (cnf_matrix)
 
