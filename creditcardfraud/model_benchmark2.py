@@ -7,11 +7,8 @@ import numpy as np
 import pandas as pd
 import os
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import average_precision_score, confusion_matrix
-from sklearn.cross_validation import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.cross_validation import KFold, cross_val_score
-from sklearn.metrics import confusion_matrix,precision_recall_curve,auc,roc_auc_score,roc_curve,recall_score,classification_report 
+from sklearn.metrics import average_precision_score, confusion_matrix,precision_recall_curve,auc,roc_auc_score,roc_curve,recall_score,classification_report 
+from sklearn.cross_validation import train_test_split, KFold, cross_val_score
 import itertools
 import matplotlib.pylab as plt
 
@@ -94,6 +91,7 @@ def plot_confusion_matrix(cm, classes,
     plt.tight_layout()
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
+    plt.show()
 
 
 #-----------------------------------
@@ -151,6 +149,14 @@ def get_best_param_Kfold(x_train_data,y_train_data):
     
     return best_c
 
+
+def logisticregression_model(X_train,y_train, X_test,y_test,c_param):
+	lr = LogisticRegression(C = c_param, penalty = 'l1')
+	lr.fit(X_train,y_train.values.ravel())
+	y_test_pred = lr.predict(X_test.values)
+	return y_test_pred
+
+
 #-----------------------------------
 
 
@@ -168,28 +174,15 @@ if __name__ == '__main__':
 	# get best super-parameter in logicregression model 
 	c_best = get_best_param_Kfold(X_train_undersample,y_train_undersample)
 	print (c_best)
-	# plot confusion matrix 
-	# Use this C_parameter to build the final model with the whole training dataset and predict the classes in the test
-	# dataset
-	lr = LogisticRegression(C = c_best, penalty = 'l1')
-	lr.fit(X_train_undersample,y_train_undersample.values.ravel())
-	y_pred_undersample = lr.predict(X_test_undersample.values)
-
-	# Compute confusion matrix
+	# re-train with best c parameter 
+	y_pred_undersample = logisticregression_model(X_train_undersample,y_train_undersample,X_test_undersample,y_test_undersample,c_best)
+	#lr = LogisticRegression(C = c_best, penalty = 'l1')
+	#lr.fit(X_train_undersample,y_train_undersample.values.ravel())
+	#y_pred_undersample = lr.predict(X_test_undersample.values)
+	# confusion matrix
 	cnf_matrix = confusion_matrix(y_test_undersample,y_pred_undersample)
-	print ('--------------- cnf_matrix :  ---------------')
+	print ('---------------- confusion  matrix ----------------')
 	print (cnf_matrix)
-	np.set_printoptions(precision=2)
-
-	print("Recall metric in the testing dataset: ", cnf_matrix[1,1]/(cnf_matrix[1,0]+cnf_matrix[1,1]))
-
-	# Plot non-normalized confusion matrix
-	class_names = [0,1]
-	plt.figure()
-	plot_confusion_matrix(cnf_matrix
-	                      , classes=class_names
-	                      , title='Confusion matrix')
-	plt.show()
 
 
 
