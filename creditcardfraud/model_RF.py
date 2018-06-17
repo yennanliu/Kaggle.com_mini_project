@@ -84,19 +84,20 @@ if __name__ == '__main__':
 	model_RF = RF_model(X,y)
 	print (model_RF)
 	# CV search 
-	parameters = {"n_estimators": [50],
-              "max_features": ["auto"], # ["auto","sqrt","log2"]
-              "max_depth": [50]}
-    """
-    neet to reshape y here :
-    y -> np.array(y).reshape(len(y),)
-    
+	# grid search 
+	parameters = {  "n_estimators": [50],
+					"max_features": ["auto"], # ["auto","sqrt","log2"],
+					"max_depth": [50]}
+	"""
+	neet to reshape y here :
+	y -> np.array(y).reshape(len(y),) or np.ravel(y)
 
-    model_RF.py:61: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
-  	model_RF.fit(X, y)
 
-    """
-	best = cv_optimize(model_RF,parameters,X,np.array(y).reshape(len(y),))
+	model_RF.py:61: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
+	model_RF.fit(X, y)
+
+	"""
+	best = cv_optimize(model_RF,parameters,X.head(1000),np.ravel(y.head(1000)))
 	print (best)
 	#def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, verbose=0):
 	y_precit = model_RF.predict(X)
