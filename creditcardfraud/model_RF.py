@@ -34,8 +34,9 @@ def get_under_sample_train_test_data(X,y):
 	print (' X_undersample : ' , len(X_undersample))
 	print (' y_undersample : ' , len(y_undersample))
 	print ('class : ', )
-	print (' normal : ', len( y[y['Class'] == 0] ))
-	print (' fraud : ' ,len( y[y['Class'] == 1] ))
+	print ('normal , fraud  : ', np.unique(y_undersample, return_counts=True))
+	#print (' normal : ', len( y_undersample[y_undersample['Class'] == 0] ))
+	#print (' fraud : ' ,len( y_undersample[y_undersample['Class'] == 1] ))
 	return X_undersample, y_undersample
 
 
@@ -55,8 +56,8 @@ def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, ver
     gs.fit(X, y)
     print ("BEST", gs.best_params_, gs.best_score_, gs.grid_scores_, gs.scorer_)
     print ("Best score: ", gs.best_score_)
-    best = gs.best_estimator_
-    return best
+    best_model = gs.best_estimator_
+    return best_model
 
 
 
@@ -99,12 +100,12 @@ if __name__ == '__main__':
 	model_RF.fit(X, y)
 
 	"""
-	best = cv_optimize(model_RF,parameters,X_undersample,np.ravel(y_undersample))
-	print (best)
-	#def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, verbose=0):
-	model_RF = RF_model(X,y)
-	y_precit = model_RF.predict(X)
-	cnf_matrix = confusion_matrix(y_precit,y)
+	best_model = cv_optimize(model_RF,parameters,X_undersample,np.ravel(y_undersample))
+	print (best_model)
+	# re-train with best model from grid search 
+	model_RF = best_model.fit(X_undersample, y_undersample )
+	y_pred = best_model.predict(X_undersample)
+	cnf_matrix = confusion_matrix(y_pred,y_undersample)
 	print (cnf_matrix)
 	# train with best parameter again 
 
