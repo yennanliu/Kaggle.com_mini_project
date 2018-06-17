@@ -9,8 +9,7 @@ import itertools
 #import matplotlib.pylab as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.grid_search import GridSearchCV
-
-
+from imblearn.under_sampling import RandomUnderSampler
 
 #-----------------------------------
 # help function 
@@ -30,9 +29,14 @@ def get_train_test_data(X,y):
 	return X_train, X_test, y_train, y_test
 
 
-def get_under_sample_train_test_data(df):
-	pass 
-
+def get_under_sample_train_test_data(X,y):
+	X_undersample, y_undersample = RandomUnderSampler(random_state=10).fit_sample(X, y)
+	print (' X_undersample : ' , len(X_undersample))
+	print (' y_undersample : ' , len(y_undersample))
+	print ('class : ', )
+	print (' normal : ', len( y[y['Class'] == 0] ))
+	print (' fraud : ' ,len( y[y['Class'] == 1] ))
+	return X_undersample, y_undersample
 
 
 #-----------------------------------
@@ -56,7 +60,7 @@ def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, ver
 
 
 
-def RF_model(X,y):
+def RF_model(X,y,):
 	model_RF = RandomForestClassifier(max_depth=2, random_state=0)
 	model_RF.fit(X, y) 
 	return model_RF
@@ -79,6 +83,8 @@ if __name__ == '__main__':
 	df, X, y  = get_data()
 	print ('X :', X )
 	print (' y :', y)
+	# get unser sample data 
+	X_undersample, y_undersample = get_under_sample_train_test_data(X,y)
 	# get best RF super paramter 
 	# fit with best super paramter 
 	model_RF = RF_model(X,y)
@@ -100,9 +106,13 @@ if __name__ == '__main__':
 	best = cv_optimize(model_RF,parameters,X.head(1000),np.ravel(y.head(1000)))
 	print (best)
 	#def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, verbose=0):
+	model_RF = RF_model(X,y,)
 	y_precit = model_RF.predict(X)
 	cnf_matrix = confusion_matrix(y_precit,y)
 	print (cnf_matrix)
+	# train with best parameter again 
+
+
 
 
 
