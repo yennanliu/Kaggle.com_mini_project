@@ -85,28 +85,24 @@ if __name__ == '__main__':
 	print (' y :', y)
 	# get unser sample data 
 	X_undersample, y_undersample = get_under_sample_train_test_data(X,y)
-	# get best RF super paramter 
-	# fit with best super paramter 
-	model_RF = RF_model(X,y)
+	model_RF = RF_model(X_undersample, y_undersample)
 	print (model_RF)
-	# CV search 
+	# CV search
+	# dev  
 	# grid search 
-	parameters = {  "n_estimators": [50],
-					"max_features": ["auto"], # ["auto","sqrt","log2"],
-					"max_depth": [50]}
+	parameters = {  "n_estimators": [50],"max_features": ["auto"] ,"max_depth": [50]}
 	"""
 	neet to reshape y here :
 	y -> np.array(y).reshape(len(y),) or np.ravel(y)
-
 
 	model_RF.py:61: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
 	model_RF.fit(X, y)
 
 	"""
-	best = cv_optimize(model_RF,parameters,X.head(1000),np.ravel(y.head(1000)))
+	best = cv_optimize(model_RF,parameters,X_undersample,np.ravel(y_undersample))
 	print (best)
 	#def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, verbose=0):
-	model_RF = RF_model(X,y,)
+	model_RF = RF_model(X,y)
 	y_precit = model_RF.predict(X)
 	cnf_matrix = confusion_matrix(y_precit,y)
 	print (cnf_matrix)
