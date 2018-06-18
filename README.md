@@ -9,6 +9,8 @@ Mini projects of predictive modelling and analytics competitions on [Kaggle](htt
 ## Main Project 
 
 
+[Credit Card Fraud](https://github.com/yennanliu/Kaggle.com_mini_project/tree/master/creditcardfraud)<br>
+
 [Amazon Access](https://github.com/yennanliu/Kaggle.com_mini_project/tree/master/Amazon_access)<br>
 
 [FB -Human-or-Robot](https://github.com/yennanliu/Kaggle.com_mini_project/tree/master/Facebook-Recruiting-IV_-Human-or-Robot)<br>
