@@ -94,6 +94,27 @@ def plot_confusion_matrix(cm, classes,
     plt.show()
 
 
+def plot_ROC_curve(y_test,y_pred,lr_model):
+	#lr = LogisticRegression(C = best_c, penalty = 'l1')
+	#y_pred_score = lr.fit(X_train_undersample,y_train_undersample.values.ravel()).decision_function(X_test_undersample.values)
+	y_pred_score = lr_model.decision_function(y_test.values)
+	fpr, tpr, thresholds = roc_curve(y_test.values.ravel(),y_pred_score)
+	roc_auc = auc(fpr,tpr)
+	# Plot ROC
+	plt.title('Receiver Operating Characteristic')
+	plt.plot(fpr, tpr, 'b',label='AUC = %0.2f'% roc_auc)
+	plt.legend(loc='lower right')
+	plt.plot([0,1],[0,1],'r--')
+	plt.xlim([-0.1,1.0])
+	plt.ylim([-0.1,1.01])
+	plt.ylabel('True Positive Rate')
+	plt.xlabel('False Positive Rate')
+	plt.show() 
+
+
+
+
+
 #-----------------------------------
 # ML 
 
@@ -151,10 +172,10 @@ def get_best_param_Kfold(x_train_data,y_train_data):
 
 
 def logisticregression_model(X_train,y_train, X_test,y_test,c_param):
-	lr = LogisticRegression(C = c_param, penalty = 'l1')
-	lr.fit(X_train,y_train.values.ravel())
-	y_test_pred = lr.predict(X_test.values)
-	return y_test_pred
+	lr_model = LogisticRegression(C = c_param, penalty = 'l1')
+	lr_model.fit(X_train,y_train.values.ravel())
+	y_test_pred = lr_model.predict(X_test.values)
+	return y_test_pred, lr_model
 
 
 #-----------------------------------
@@ -176,19 +197,23 @@ if __name__ == '__main__':
 	c_best = get_best_param_Kfold(X_train_undersample,y_train_undersample)
 	print (c_best)
 	# re-train with best c parameter 
-	y_pred_undersample = logisticregression_model(X_train_undersample,y_train_undersample,X_test_undersample,y_test_undersample,c_best)
+	y_pred_undersample,lr_model = logisticregression_model(X_train_undersample,y_train_undersample,X_test_undersample,y_test_undersample,c_best)
 	cnf_matrix = confusion_matrix(y_test_undersample,y_pred_undersample)
 	print ('---------------- confusion  matrix ----------------')
 	print (cnf_matrix)
+	print ('---------------- ROC curve  ----------------')
+	plot_ROC_curve(y_test_undersample ,y_pred_undersample,lr_model)
+	"""
 	print ('################ Train With Whole data ################')
 	# get best super-parameter in logicregression model 
 	c_best_ = get_best_param_Kfold(X_train,y_train)
 	print (c_best_)
 	# re-train with best c parameter 
-	y_pred = logisticregression_model(X_train,y_train,X_test,y_test,c_best_)
+	y_pred, lr_model = logisticregression_model(X_train,y_train,X_test,y_test,c_best_)
 	cnf_matrix = confusion_matrix(y_test,y_pred)
 	print ('---------------- confusion  matrix ----------------')
 	print (cnf_matrix)
+	"""
 
 
 
