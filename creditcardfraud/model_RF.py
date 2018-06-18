@@ -66,7 +66,7 @@ def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, ver
 
 
 
-def RF_model(X,y,):
+def RF_model(X,y):
 	model_RF = RandomForestClassifier(max_depth=2, random_state=0)
 	model_RF.fit(X, y) 
 	return model_RF
@@ -89,8 +89,9 @@ if __name__ == '__main__':
 	df, X, y  = get_data()
 	print ('X :', X )
 	print (' y :', y)
-	# get unser sample data 
+	# get under sample train/test data 
 	X_undersample, y_undersample = get_under_sample_data(X,y)
+	X_train_undersample, X_test_undersample, y_train_undersample, y_test_undersample = get_train_test_data(X_undersample, y_undersample)
 	model_RF = RF_model(X_undersample, y_undersample)
 	print (model_RF)
 	# CV search
@@ -104,12 +105,12 @@ if __name__ == '__main__':
 	model_RF.py:61: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
 	model_RF.fit(X, y)
 	"""
-	best_model = cv_optimize(model_RF,parameters,X_undersample,np.ravel(y_undersample))
+	best_model = cv_optimize(model_RF,parameters,X_train_undersample,np.ravel(y_train_undersample))
 	print (best_model)
 	# re-train with best model from grid search 
-	model_RF = best_model.fit(X_undersample, y_undersample )
-	y_pred = best_model.predict(X_undersample)
-	cnf_matrix = confusion_matrix(y_pred,y_undersample)
+	model_RF = best_model.fit(X_train_undersample, y_train_undersample )
+	y_test_pred = best_model.predict(X_test_undersample)
+	cnf_matrix = confusion_matrix(y_test_pred,y_test_undersample)
 	print (cnf_matrix)
 	# train with best parameter again 
 
