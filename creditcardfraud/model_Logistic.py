@@ -94,10 +94,11 @@ def plot_confusion_matrix(cm, classes,
     plt.show()
 
 
-def plot_ROC_curve(y_test,y_pred,lr_model):
+def plot_ROC_curve(X_test, y_test,y_pred,model):
 	#lr = LogisticRegression(C = best_c, penalty = 'l1')
 	#y_pred_score = lr.fit(X_train_undersample,y_train_undersample.values.ravel()).decision_function(X_test_undersample.values)
-	y_pred_score = lr_model.decision_function(y_test.values)
+	#y_pred_undersample_score = lr.fit(X_train_undersample,y_train_undersample.values.ravel()).decision_function(X_test_undersample.values)
+	y_pred_score = model.decision_function(X_test.values)
 	fpr, tpr, thresholds = roc_curve(y_test.values.ravel(),y_pred_score)
 	roc_auc = auc(fpr,tpr)
 	# Plot ROC
@@ -202,7 +203,7 @@ if __name__ == '__main__':
 	print ('---------------- confusion  matrix ----------------')
 	print (cnf_matrix)
 	print ('---------------- ROC curve  ----------------')
-	plot_ROC_curve(y_test_undersample ,y_pred_undersample,lr_model)
+	plot_ROC_curve(X_test_undersample, y_test_undersample ,y_pred_undersample,lr_model)
 	"""
 	print ('################ Train With Whole data ################')
 	# get best super-parameter in logicregression model 
