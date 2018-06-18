@@ -49,14 +49,12 @@ def get_under_sample_train_test_data(X,y):
 
 
 
-def plot_ROC_curve(X_test, y_test,y_pred,model):
-	#lr = LogisticRegression(C = best_c, penalty = 'l1')
-	#y_pred_score = lr.fit(X_train_undersample,y_train_undersample.values.ravel()).decision_function(X_test_undersample.values)
-	#y_pred_undersample_score = lr.fit(X_train_undersample,y_train_undersample.values.ravel()).decision_function(X_test_undersample.values)
+def plot_ROC_curve_updated(X_test, y_test,y_pred,model):
 	try:
 		y_pred_score = model.decision_function(X_test.values)
 	except:
 		y_pred_score = model.predict_proba(X_test)
+	# http://scikit-learn.org/stable/auto_examples/ensemble/plot_feature_transformation.html
 	fpr, tpr, thresholds = roc_curve(y_test,y_pred_score[:, 1])
 	roc_auc = auc(fpr,tpr)
 	# Plot ROC
@@ -140,7 +138,7 @@ if __name__ == '__main__':
 	cnf_matrix = confusion_matrix(y_test_pred,y_test_undersample)
 	print (cnf_matrix)
 	print ('---------------- ROC curve  ----------------')
-	plot_ROC_curve(X_test_undersample, y_test_undersample ,y_test_pred,best_model)
+	plot_ROC_curve_updated(X_test_undersample, y_test_undersample ,y_test_pred,best_model)
 
 	# train with best parameter again 
 
