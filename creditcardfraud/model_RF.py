@@ -29,7 +29,7 @@ def get_train_test_data(X,y):
 	return X_train, X_test, y_train, y_test
 
 
-def get_under_sample_train_test_data(X,y):
+def get_under_sample_data(X,y):
 	X_undersample, y_undersample = RandomUnderSampler(random_state=10).fit_sample(X, y)
 	print (' X_undersample : ' , len(X_undersample))
 	print (' y_undersample : ' , len(y_undersample))
@@ -38,6 +38,11 @@ def get_under_sample_train_test_data(X,y):
 	#print (' normal : ', len( y_undersample[y_undersample['Class'] == 0] ))
 	#print (' fraud : ' ,len( y_undersample[y_undersample['Class'] == 1] ))
 	return X_undersample, y_undersample
+
+
+
+def get_under_sample_train_test_data(X,y):
+	pass 
 
 
 #-----------------------------------
@@ -85,20 +90,19 @@ if __name__ == '__main__':
 	print ('X :', X )
 	print (' y :', y)
 	# get unser sample data 
-	X_undersample, y_undersample = get_under_sample_train_test_data(X,y)
+	X_undersample, y_undersample = get_under_sample_data(X,y)
 	model_RF = RF_model(X_undersample, y_undersample)
 	print (model_RF)
 	# CV search
 	# dev  
 	# grid search 
+	print ('---------------- grid search  ---------------- ')
 	parameters = {  "n_estimators": [50],"max_features": ["auto"] ,"max_depth": [50]}
 	"""
 	neet to reshape y here :
 	y -> np.array(y).reshape(len(y),) or np.ravel(y)
-
 	model_RF.py:61: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
 	model_RF.fit(X, y)
-
 	"""
 	best_model = cv_optimize(model_RF,parameters,X_undersample,np.ravel(y_undersample))
 	print (best_model)
