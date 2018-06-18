@@ -22,9 +22,9 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 
 ```bash
 
-$ git pull https://github.com/yennanliu/Kaggle.com_mini_project.git
-$ cd ~ && cd  Kaggle.com_mini_project/creditcardfraud/data  && brew install unzip && unzip creditcardfraud.zip 
-$python model_RF.py
+$ git clone https://github.com/yennanliu/Kaggle.com_mini_project.git
+$ cd ~ && cd  Kaggle.com_mini_project/creditcardfraud/data  && brew install unzip && unzip creditcardfraud.zip && cd .. 
+$ python model_RF.py
 # output
 
  X_undersample :  984
