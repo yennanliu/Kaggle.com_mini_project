@@ -22,9 +22,8 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 
 ```bash
 
-# plz download the dataset : https://www.kaggle.com/joparga3/in-depth-skewed-data-classif-93-recall-acc-now/data
-# and save under /data 
-
+$ git pull https://github.com/yennanliu/Kaggle.com_mini_project.git
+$ cd ~ && cd  Kaggle.com_mini_project/creditcardfraud/data  && brew install unzip && unzip creditcardfraud.zip 
 $python model_RF.py
 # output
 
