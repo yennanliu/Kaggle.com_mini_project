@@ -204,7 +204,7 @@ if __name__ == '__main__':
 	print (cnf_matrix)
 	print ('---------------- ROC curve  ----------------')
 	plot_ROC_curve(X_test_undersample, y_test_undersample ,y_pred_undersample,lr_model)
-	"""
+	
 	print ('################ Train With Whole data ################')
 	# get best super-parameter in logicregression model 
 	c_best_ = get_best_param_Kfold(X_train,y_train)
@@ -214,7 +214,9 @@ if __name__ == '__main__':
 	cnf_matrix = confusion_matrix(y_test,y_pred)
 	print ('---------------- confusion  matrix ----------------')
 	print (cnf_matrix)
-	"""
+	print ('---------------- ROC curve  ----------------')
+	plot_ROC_curve(X_test, y_test ,y_pred,lr_model)
+	
 
 
 
