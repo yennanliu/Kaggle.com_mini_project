@@ -6,6 +6,8 @@ import os
 from sklearn.metrics import average_precision_score, confusion_matrix,precision_recall_curve,auc,roc_auc_score,roc_curve,recall_score,classification_report 
 from sklearn.cross_validation import train_test_split, KFold, cross_val_score
 import itertools
+import matplotlib.pylab as plt
+
 #import matplotlib.pylab as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.grid_search import GridSearchCV
@@ -43,6 +45,30 @@ def get_under_sample_data(X,y):
 
 def get_under_sample_train_test_data(X,y):
 	pass 
+
+
+
+
+def plot_ROC_curve(X_test, y_test,y_pred,model):
+	#lr = LogisticRegression(C = best_c, penalty = 'l1')
+	#y_pred_score = lr.fit(X_train_undersample,y_train_undersample.values.ravel()).decision_function(X_test_undersample.values)
+	#y_pred_undersample_score = lr.fit(X_train_undersample,y_train_undersample.values.ravel()).decision_function(X_test_undersample.values)
+	try:
+		y_pred_score = model.decision_function(X_test.values)
+	except:
+		y_pred_score = model.predict_proba(X_test)
+	fpr, tpr, thresholds = roc_curve(y_test,y_pred_score[:, 1])
+	roc_auc = auc(fpr,tpr)
+	# Plot ROC
+	plt.title('Receiver Operating Characteristic')
+	plt.plot(fpr, tpr, 'b',label='AUC = %0.2f'% roc_auc)
+	plt.legend(loc='lower right')
+	plt.plot([0,1],[0,1],'r--')
+	plt.xlim([-0.1,1.0])
+	plt.ylim([-0.1,1.01])
+	plt.ylabel('True Positive Rate')
+	plt.xlabel('False Positive Rate')
+	plt.show() 
 
 
 #-----------------------------------
@@ -110,8 +136,12 @@ if __name__ == '__main__':
 	# re-train with best model from grid search 
 	model_RF = best_model.fit(X_train_undersample, y_train_undersample )
 	y_test_pred = best_model.predict(X_test_undersample)
+	print ('---------------- confusion  matrix ----------------')
 	cnf_matrix = confusion_matrix(y_test_pred,y_test_undersample)
 	print (cnf_matrix)
+	print ('---------------- ROC curve  ----------------')
+	plot_ROC_curve(X_test_undersample, y_test_undersample ,y_test_pred,best_model)
+
 	# train with best parameter again 
 
 
