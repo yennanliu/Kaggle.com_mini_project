@@ -10,10 +10,10 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 - Process 
 	- step 1) data visualizartion : scan potential fraud relative data points, e.g. : fraud data VS normal data 
 	- step 2) algorithm : 
-			- time dependent : e.g. credit card transaction : [100,120,150, 1000000, 100,103]
-				- time-series analysis 
-			- time independent : assume each transaction/fraud is "independent", so time-series will be removed in this case 
-				- unsurprised/surprised 
+			* time dependent : e.g. credit card transaction : [100,120,150, 1000000, 100,103]
+				* time-series analysis 
+			* time independent : assume each transaction/fraud is "independent", so time-series will be removed in this case 
+				* unsurprised/surprised 
     - step 3) validate fraud detection outcome with domain specialist
     - step 4) repeat step 1-3, keep optimize models and have logical phenomenon explanation 
     - step 5) deploy models to prod and track the performance 
