@@ -49,6 +49,16 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 
   ```
   - Precision = TP/(TP+FP)
+  ```python 
+  # Given confusion matrix 
+  [[90  10]
+  [ 10 90]]
+  # "how accuracy the model predict `True` (predict) from all `True`(actual) group" 
+  # can be defined as TP/(TP+FP) 
+  # FP = false positive, data is in 0 group (negative), BUT predict as 1 group (true)
+  # In this case, the Precision = (90)/(90+10) = 90%
+
+  ```
   - Recall = TP/(TP+FN)
   - ROC curve 
   - Precision-Recall curve (AUPRC)
@@ -87,6 +97,7 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
 ```
 # Ref 
 - https://www.kaggle.com/mlg-ulb/creditcardfraud
+- http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/
 
 
 
