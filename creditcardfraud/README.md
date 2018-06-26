@@ -60,6 +60,15 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 
   ```
   - Recall = TP/(TP+FN)
+  ```python 
+  # also known as "Sensitivity" or "Recall"
+  # When the data is actually `True`(actual), how accurate the model  predict it is `True` ?
+  # For the confusion matrix 
+  [[90  10]
+  [ 10 90]]
+  # the Recall = (90)/(10+90) = 90%
+
+  ```
   - ROC curve 
   - Precision-Recall curve (AUPRC)
 
