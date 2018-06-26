@@ -137,6 +137,9 @@ if __name__ == '__main__':
 	print ('---------------- confusion  matrix ----------------')
 	cnf_matrix = confusion_matrix(y_test_pred,y_test_undersample)
 	print (cnf_matrix)
+	print ('---------------- classification report  ----------------')
+	target_names=['0', '1']
+	print (classification_report(y_test_undersample, y_test_pred,target_names=target_names))
 	print ('---------------- ROC curve  ----------------')
 	plot_ROC_curve_updated(X_test_undersample, y_test_undersample ,y_test_pred,best_model)
 
