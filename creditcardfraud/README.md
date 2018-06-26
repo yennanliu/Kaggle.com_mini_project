@@ -26,8 +26,8 @@ Identify fraudulent credit card transactions. (It is important that credit card 
    [[90  10]
    [ 10 90]]
   # The x-asis means "true group" ; while y-axis means "predict group"
-  # i.e. [90  10] means 90 is in group 0 and predicted as group 0 ; 10 is in group 1 and predicted as group 0 
-  # i.e. [10  90] means 10 is in group 0 and predicted as group 1 ; 90 is in group 1 and predicted as group 1
+  # i.e. [90  10] means 90 count of data is in group 0 and predicted as group 0 ; 10 count of data is in group 1 and predicted as group 0 
+  # i.e. [10  90] means 10 count of data is in group 0 and predicted as group 1 ; 90 count of data is in group 1 and predicted as group 1
   # So, we can SAY : over all 200 (90+10+10+90) data sample, 
   # 90+90 = 180 data is predicted accurately 
   # 10 of [90  10] data is predicted wrongly as group 1 
@@ -37,6 +37,17 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 
 
   - Accuracy = (TP+TN)/total : 
+  ```python 
+  # Again, given confusion matrix as above :
+  [[90  10]
+  [ 10 90]]
+  # The "OVERALL accuracy" of the model can be defined :
+  # Accuracy = (TP+TN)/total , 
+  # TP = true positive, data is in 1 group (true), predict as 1 group (true) 
+  # TN = true negative, data is in 0 group (false), predict as 0 group (false) 
+  # so we say the Accuracy = (90+90)/(90+10+10+90) = 90% is the model's "OVERALL" accuracy of all data points 
+
+  ```
   - Precision = TP/(TP+FP)
   - Recall = TP/(TP+FN)
   - ROC curve 
