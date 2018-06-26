@@ -13,14 +13,10 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 	   - time dependent : e.g. credit card transaction : [100,120,150, 1000000, 100,103]
 	      - time-series analysis 
 	   - time independent : assume each transaction/fraud is "independent", so time-series will be removed in this case 
-<<<<<<< HEAD
 	      - unsupervised/supervised modeling 
-=======
-	      - unsurprised/surprised modeling 
->>>>>>> ac3168100de0e660463d0c363dd25412fb14ec0b
-    - step 3) validate fraud detection outcome with domain specialist
-    - step 4) repeat step 1-3, keep optimize models and have logical phenomenon explanation 
-    - step 5) deploy models to prod and track the performance 
+  - step 3) validate fraud detection outcome with domain specialist
+  - step 4) repeat step 1-3, keep optimize models and have logical phenomenon explanation 
+  - step 5) deploy models to prod and track the performance 
 
 
 - Metric
@@ -73,7 +69,6 @@ Identify fraudulent credit card transactions. (It is important that credit card 
   # the Recall = (90)/(10+90) = 90%
 
   ```
-<<<<<<< HEAD
   - ROC curve  (receiver operating characteristic)
   ```python
   # The curve with different thresholds, positive rate ( y-axis), and false positive rate (x-axis)
@@ -104,12 +99,6 @@ Identify fraudulent credit card transactions. (It is important that credit card 
   # total area under the ROC curve,
   # The model perform better when AUC -> 1 
   ```
-
-=======
-  - ROC curve 
->>>>>>> ac3168100de0e660463d0c363dd25412fb14ec0b
-  - Precision-Recall curve (AUPRC)
-
 
 # Tech 
 - python 3, Scikit-learn, numpy, pandas 
