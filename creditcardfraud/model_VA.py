@@ -1,25 +1,37 @@
 # import library 
 
+# op 
 import numpy as np
 import pandas as pd
 import os
-from sklearn.metrics import average_precision_score, confusion_matrix,precision_recall_curve,auc,roc_auc_score,roc_curve,recall_score,classification_report 
-from sklearn.cross_validation import train_test_split, KFold, cross_val_score
 import itertools
-import matplotlib.pylab as plt
 
 #import matplotlib.pylab as plt
-from sklearn.ensemble import RandomForestClassifier
+# ML 
+from sklearn.ensemble import RandomTreesEmbedding, RandomForestClassifier,GradientBoostingClassifier
+from sklearn import model_selection
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
 from sklearn.grid_search import GridSearchCV
 from imblearn.under_sampling import RandomUnderSampler
+from sklearn.metrics import average_precision_score, confusion_matrix,precision_recall_curve,auc,roc_auc_score,roc_curve,recall_score,classification_report 
+from sklearn.cross_validation import train_test_split, KFold, cross_val_score
+
 
 #-----------------------------------
 # help function 
 
 def get_data():
 	df = pd.read_csv("data/creditcard.csv")
-	print (df.head())
-	print (df.columns)
+	#print (df.head())
+	#print (df.columns)
 	X = df.ix[:, df.columns != 'Class']
 	y = df.ix[:, df.columns == 'Class']
 	return df, X, y 
@@ -96,8 +108,45 @@ def RF_model(X,y):
 	return model_RF
 
 
+def training_model(X,y,model_):
+	model_ = model_()
+	model_.fit(X, y) 
+	return model_
 
 
+
+
+#-----------------------------------
+# main running func 
+def main(model_):
+	df, X, y  = get_data()
+	#print ('X :', X )
+	#print (' y :', y)
+	# get under sample train/test data 
+	X_undersample, y_undersample = get_under_sample_data(X,y)
+	X_train_undersample, X_test_undersample, y_train_undersample, y_test_undersample = get_train_test_data(X_undersample, y_undersample)
+	model_ = training_model(X_undersample, y_undersample,model_)
+	print (model_) 
+	# grid search 
+	print ('---------------- grid search  ---------------- ')
+	####### will fix the grid tuning here for all algorithms #######
+	#parameters = {  "n_estimators": [50],"max_features": ["auto"] ,"max_depth": [50]}
+	#parameters = {  "n_estimators": [50],"max_features": ["auto"]}
+	#best_model = cv_optimize(model_,parameters,X_train_undersample,np.ravel(y_train_undersample))
+	#print (best_model)
+	# re-train with best model from grid search 
+	best_model = model_ 
+	model_RF = best_model.fit(X_train_undersample, y_train_undersample )
+	y_test_pred = best_model.predict(X_test_undersample)
+	print ('---------------- confusion  matrix ----------------')
+	cnf_matrix = confusion_matrix(y_test_pred,y_test_undersample)
+	print (cnf_matrix)
+	print ('---------------- classification report  ----------------')
+	target_names=['0', '1']
+	print (classification_report(y_test_undersample, y_test_pred,target_names=target_names))
+	print ('---------------- ROC curve  ----------------')
+	#plot_ROC_curve_updated(X_test_undersample, y_test_undersample ,y_test_pred,best_model)
+	return cnf_matrix
 
 
 
@@ -110,43 +159,26 @@ def RF_model(X,y):
 
 
 if __name__ == '__main__':
-	df, X, y  = get_data()
-	print ('X :', X )
-	print (' y :', y)
-	# get under sample train/test data 
-	X_undersample, y_undersample = get_under_sample_data(X,y)
-	X_train_undersample, X_test_undersample, y_train_undersample, y_test_undersample = get_train_test_data(X_undersample, y_undersample)
-	model_RF = RF_model(X_undersample, y_undersample)
-	print (model_RF)
-	# CV search
-	# dev  
-	# grid search 
-	print ('---------------- grid search  ---------------- ')
-	parameters = {  "n_estimators": [50],"max_features": ["auto"] ,"max_depth": [50]}
-	"""
-	neet to reshape y here :
-	y -> np.array(y).reshape(len(y),) or np.ravel(y)
-	model_RF.py:61: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
-	model_RF.fit(X, y)
-	"""
-	best_model = cv_optimize(model_RF,parameters,X_train_undersample,np.ravel(y_train_undersample))
-	print (best_model)
-	# re-train with best model from grid search 
-	model_RF = best_model.fit(X_train_undersample, y_train_undersample )
-	y_test_pred = best_model.predict(X_test_undersample)
-	print ('---------------- confusion  matrix ----------------')
-	cnf_matrix = confusion_matrix(y_test_pred,y_test_undersample)
-	print (cnf_matrix)
-	print ('---------------- classification report  ----------------')
-	target_names=['0', '1']
-	print (classification_report(y_test_undersample, y_test_pred,target_names=target_names))
-	print ('---------------- ROC curve  ----------------')
-	plot_ROC_curve_updated(X_test_undersample, y_test_undersample ,y_test_pred,best_model)
+	models = []
+	results= []
+	names = []
+	models.append(('LR', LogisticRegression))
+	models.append(('LDA', LinearDiscriminantAnalysis))
+	models.append(('KNN', KNeighborsClassifier))
+	models.append(('CART', DecisionTreeClassifier))
+	models.append(('NB', GaussianNB))
+	models.append(('SVM', SVC))
+	models.append(('RF', RandomForestClassifier))
+	models.append(('GradientBoosting', GradientBoostingClassifier))
 
-	# train with best parameter again 
-
-
-
+	for name,model in models:
+		print ('model name :', name)
+		cnf_matrix = main(model)
+		results.append(cnf_matrix)
+		names.append(name)
+	for names,results in zip(names,results):
+		print ('* model name :', names )
+		print ('* accuracy :', results )
 
 
 
