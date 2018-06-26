@@ -13,21 +13,34 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 	   - time dependent : e.g. credit card transaction : [100,120,150, 1000000, 100,103]
 	      - time-series analysis 
 	   - time independent : assume each transaction/fraud is "independent", so time-series will be removed in this case 
-	      - unsurprised/surprised 
+	      - unsurprised/surprised modeling 
     - step 3) validate fraud detection outcome with domain specialist
     - step 4) repeat step 1-3, keep optimize models and have logical phenomenon explanation 
     - step 5) deploy models to prod and track the performance 
 
 
+- Metric
+  - Confusion matrix : 
+  ```python
+  # given a confusion matrix :
+   [[90  10]
+   [ 10 90]]
+  # The x-asis means "true group" ; while y-axis means "predict group"
+  # i.e. [90  10] means 90 is in group 0 and predicted as group 0 ; 10 is in group 1 and predicted as group 0 
+  # i.e. [10  90] means 10 is in group 0 and predicted as group 1 ; 90 is in group 1 and predicted as group 1
+  # So, we can SAY : over all 200 (90+10+10+90) data sample, 
+  # 90+90 = 180 data is predicted accurately 
+  # 10 of [90  10] data is predicted wrongly as group 1 
+  # 10 of [10  90] data is predicted wrongly as group 0  
 
-# Metric 
+  ```
 
-- ML classification 
-	- Accuracy = (TP+TN)/total
-	- Precision = TP/(TP+FP)
-	- Recall = TP/(TP+FN)
-	- ROC curve 
-	- Precision-Recall curve (AUPRC)
+
+  - Accuracy = (TP+TN)/total : 
+  - Precision = TP/(TP+FP)
+  - Recall = TP/(TP+FN)
+  - ROC curve 
+  - Precision-Recall curve (AUPRC)
 
 
 # Tech 
