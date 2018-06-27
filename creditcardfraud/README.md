@@ -5,6 +5,10 @@
 
 Identify fraudulent credit card transactions. (It is important that credit card companies are able to recognize fraudulent credit card transactions so that customers are not charged for items that they did not purchase.)
 
+>Will optimize the model torward "minimize False Positive (Type I error)" target, since we are OK to label a normal (actual) transaction
+as fraud (predict), but NEVER miss any fraud (actual) cases (fraud actual, but predict as normal)
+
+
 # Theory (Fraud detection)
 
 - Process 
@@ -71,10 +75,11 @@ Identify fraudulent credit card transactions. (It is important that credit card 
   ```
   - ROC curve  (receiver operating characteristic)
   ```python
-  # The curve with different thresholds, positive rate ( y-axis), and false positive rate (x-axis)
+  # The curve with different thresholds,input thresholds, and get 
+  # false_positive_rate as x, and true_positive_rate as y
   # i.e. 
   # true_positive_rate, false_positive_rate = ROC(thresholds)
-  # calculate the  true_positive_rate, false_positive_rate with "different thresholds", and plot all above as ROC curve
+  # calculate the true_positive_rate, false_positive_rate with "different thresholds", and plot all above as ROC curve
   # e.g. 
   # ------------
   >>> import numpy as np
@@ -100,6 +105,13 @@ Identify fraudulent credit card transactions. (It is important that credit card 
   # The model perform better when AUC -> 1 
   ```
 
+  - F1 Score 
+  ```python 
+  # Treat Precision and Recall equally, a special case of F Measure
+  # F1 score = 2/(1/Precision + 1/Recall)
+  # Harmonic Mean of Precision and Recall
+  ```
+
 # Tech 
 - python 3, Scikit-learn, numpy, pandas 
 
@@ -109,7 +121,7 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 
 $ git clone https://github.com/yennanliu/Kaggle.com_mini_project.git
 $ cd ~ && cd  Kaggle.com_mini_project/creditcardfraud/data  && brew install unzip && unzip creditcardfraud.zip && cd ..
- 
+
 # https://github.com/dsmbgu8/image_annotate.py/issues/4
 #$ echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc &&  python model_RF.py
 $ python model_RF.py
