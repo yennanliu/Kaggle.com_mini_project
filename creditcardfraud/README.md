@@ -108,7 +108,10 @@ Identify fraudulent credit card transactions. (It is important that credit card 
 ```bash
 
 $ git clone https://github.com/yennanliu/Kaggle.com_mini_project.git
-$ cd ~ && cd  Kaggle.com_mini_project/creditcardfraud/data  && brew install unzip && unzip creditcardfraud.zip && cd .. 
+$ cd ~ && cd  Kaggle.com_mini_project/creditcardfraud/data  && brew install unzip && unzip creditcardfraud.zip && cd ..
+ 
+# https://github.com/dsmbgu8/image_annotate.py/issues/4
+#$ echo "backend: TkAgg" >> ~/.matplotlib/matplotlibrc &&  python model_RF.py
 $ python model_RF.py
 # output
 
