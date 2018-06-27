@@ -6,7 +6,7 @@
 Identify fraudulent credit card transactions. (It is important that credit card companies are able to recognize fraudulent credit card transactions so that customers are not charged for items that they did not purchase.)
 
 >Will optimize the model torward "minimize False Positive (Type I error)" target, since we are OK to label a normal (actual) transaction
-as fraud (predict), but NEVER miss any fraud (actual) cases (fraud actual, but predict as normal)
+as fraud (predict), but NEVER miss any fraud (actual) case (fraud actual, but predict as normal)
 
 
 # Theory (Fraud detection)
