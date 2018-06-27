@@ -98,6 +98,39 @@ def cv_optimize(clf, parameters, X, y, n_jobs=1, n_folds=5, score_func=None, ver
     return best_model
 
 
+def cv_optimize_RF(clf, X, y, n_jobs=1, n_folds=10, score_func=None, verbose=0):
+	param_grid = {'min_samples_split': [3, 5, 10], 
+				  'n_estimators' : [100, 300],
+				  'max_depth': [3, 5, 15, 25],
+				  'max_features': [3, 5, 10, 20]}
+	gs = GridSearchCV(clf, param_grid=param_grid, n_jobs=n_jobs, cv=n_folds, verbose=verbose)
+	gs.fit(X, y)
+	print ("BEST", gs.best_params_, gs.best_score_, gs.grid_scores_, gs.scorer_)
+	print ("Best score: ", gs.best_score_)
+	best_model = gs.best_estimator_
+	return best_model
+
+def grid_search_wrapper(refit_score='precision_score'):
+    """
+    fits a GridSearchCV classifier using refit_score for optimization
+    prints classifier performance metrics
+    """
+    skf = StratifiedKFold(n_splits=10)
+    grid_search = GridSearchCV(clf, param_grid, scoring=scorers, refit=refit_score,
+                           cv=skf, return_train_score=True, n_jobs=-1)
+    grid_search.fit(X_train.values, y_train.values)
+
+    # make the predictions
+    y_pred = grid_search.predict(X_test.values)
+
+    print('Best params for {}'.format(refit_score))
+    print(grid_search.best_params_)
+
+    # confusion matrix on the test data.
+    print('\nConfusion matrix of Random Forest optimized for {} on the test data:'.format(refit_score))
+    print(pd.DataFrame(confusion_matrix(y_test, y_pred),
+                 columns=['pred_neg', 'pred_pos'], index=['neg', 'pos']))
+    return grid_search
 
 def RF_model(X,y):
 	model_RF = RandomForestClassifier(max_depth=2, random_state=0)
@@ -115,7 +148,7 @@ def training_model(X,y,model_):
 
 #-----------------------------------
 # main running func 
-def main(model_):
+def main(model_,model_name):
 	df, X, y  = get_data()
 	#print ('X :', X )
 	#print (' y :', y)
@@ -126,13 +159,21 @@ def main(model_):
 	print (model_) 
 	# grid search 
 	print ('---------------- grid search  ---------------- ')
+	print ('model_ : ', str(model_name))
 	####### will fix the grid tuning here for all algorithms #######
 	#parameters = {  "n_estimators": [50],"max_features": ["auto"] ,"max_depth": [50]}
 	#parameters = {  "n_estimators": [50],"max_features": ["auto"]}
-	#best_model = cv_optimize(model_,parameters,X_train_undersample,np.ravel(y_train_undersample))
+	if str(model_name)=="RF":
+		print ('start CV optimize....')
+		best_model = cv_optimize_RF(model_,X_train_undersample,np.ravel(y_train_undersample))
+	else:
+		print ('no CV optimize....')
+		best_model = model_
+
 	#print (best_model)
 	# re-train with best model from grid search 
-	best_model = model_ 
+	#best_model = model_ 
+
 	model_RF = best_model.fit(X_train_undersample, y_train_undersample )
 	y_test_pred = best_model.predict(X_test_undersample)
 	print ('---------------- confusion  matrix ----------------')
@@ -170,7 +211,7 @@ if __name__ == '__main__':
 
 	for name,model in models:
 		print ('model name :', name)
-		cnf_matrix = main(model)
+		cnf_matrix = main(model,name)
 		results.append(cnf_matrix)
 		names.append(name)
 	for names,results in zip(names,results):
