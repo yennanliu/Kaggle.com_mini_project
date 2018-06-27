@@ -10,9 +10,7 @@ import itertools
 # ML 
 from sklearn.ensemble import RandomTreesEmbedding, RandomForestClassifier,GradientBoostingClassifier
 from sklearn import model_selection
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, make_scorer,average_precision_score, confusion_matrix,precision_recall_curve,auc,roc_auc_score,roc_curve,recall_score,classification_report 
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -21,7 +19,6 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.grid_search import GridSearchCV
 from imblearn.under_sampling import RandomUnderSampler
-from sklearn.metrics import average_precision_score, confusion_matrix,precision_recall_curve,auc,roc_auc_score,roc_curve,recall_score,classification_report 
 from sklearn.cross_validation import train_test_split, KFold, cross_val_score
 
 
@@ -178,7 +175,8 @@ if __name__ == '__main__':
 		names.append(name)
 	for names,results in zip(names,results):
 		print ('* model name :', names )
-		print ('* accuracy :', results )
+		print ('* accuracy :')
+		print (results)
 
 
 
