@@ -92,6 +92,15 @@ def plot_ROC_curve_updated(X_test, y_test,y_pred,model):
 
 # DL 
 
+def create_baseline():
+	# create model
+	model = Sequential()
+	model.add(Dense(60, input_dim=30, kernel_initializer='normal', activation='relu'))
+	model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+	# Compile model
+	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+
 #-----------------------------------
 
 
