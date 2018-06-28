@@ -113,13 +113,24 @@ if __name__ == '__main__':
 	# get under sample train/test data 
 	X_undersample, y_undersample = get_under_sample_data(X,y)
 	X_train_undersample, X_test_undersample, y_train_undersample, y_test_undersample = get_train_test_data(X_undersample, y_undersample)
+	####  DL #### 
 	seed = 7
 	np.random.seed(seed)
 	# evaluate model with standardized dataset
-	estimator = KerasClassifier(build_fn=create_baseline, epochs=10, batch_size=5, verbose=0)
+	#estimator = KerasClassifier(build_fn=create_baseline, epochs=100, batch_size=5, verbose=0)
+	#kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
+	#results = cross_val_score(estimator, X_train_undersample, y_train_undersample, cv=kfold)
+	#print("Results: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+	# https://machinelearningmastery.com/binary-classification-tutorial-with-the-keras-deep-learning-library/
+	estimators = []
+	estimators.append(('standardize', StandardScaler()))
+	estimators.append(('mlp', KerasClassifier(build_fn=create_baseline, epochs=20, batch_size=5, verbose=0)))
+	pipeline = Pipeline(estimators)
 	kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
-	results = cross_val_score(estimator, X_train_undersample, y_train_undersample, cv=kfold)
-	print("Results: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+	results = cross_val_score(pipeline, X_train_undersample, y_train_undersample, cv=kfold)
+	print("Standardized: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+	print (results)
+
 
 
 
