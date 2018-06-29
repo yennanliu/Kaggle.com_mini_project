@@ -101,6 +101,27 @@ def create_baseline():
 	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 	return model
 
+
+def create_smaller():
+	# create model
+	model = Sequential()
+	model.add(Dense(15, input_dim=30, kernel_initializer='normal', activation='relu'))
+	model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+	# Compile model
+	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+
+
+def create_larger():
+	# create model
+	model = Sequential()
+	model.add(Dense(60, input_dim=30, kernel_initializer='normal', activation='relu'))
+	model.add(Dense(30, kernel_initializer='normal', activation='relu'))
+	model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
+	# Compile model
+	model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+	return model
+
 #-----------------------------------
 
 
@@ -124,7 +145,7 @@ if __name__ == '__main__':
 	# https://machinelearningmastery.com/binary-classification-tutorial-with-the-keras-deep-learning-library/
 	estimators = []
 	estimators.append(('standardize', StandardScaler()))
-	estimators.append(('mlp', KerasClassifier(build_fn=create_baseline, epochs=20, batch_size=5, verbose=0)))
+	estimators.append(('mlp', KerasClassifier(build_fn=create_larger, epochs=100, batch_size=5, verbose=0)))
 	pipeline = Pipeline(estimators)
 	kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
 	results = cross_val_score(pipeline, X_train_undersample, y_train_undersample, cv=kfold)
