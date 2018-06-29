@@ -138,13 +138,13 @@ def main(build_fn):
 	estimators = []
 	# evaluate model with standardized dataset
 	estimators.append(('standardize', StandardScaler()))
-	estimators.append(('mlp', KerasClassifier(build_fn=build_fn, epochs=100, batch_size=5, verbose=0)))
+	estimators.append(('mlp', KerasClassifier(build_fn=build_fn, epochs=200, batch_size=5, verbose=0)))
 	pipeline = Pipeline(estimators)
 	kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
 	results = cross_val_score(pipeline, X_train_undersample, y_train_undersample, cv=kfold)
 	print("Standardized: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
 	print (results)
-	return results
+	#return results
 
 
 
