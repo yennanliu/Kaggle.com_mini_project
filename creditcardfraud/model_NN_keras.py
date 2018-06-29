@@ -92,7 +92,7 @@ def plot_ROC_curve_updated(X_test, y_test,y_pred,model):
 
 # DL 
 
-def create_baseline():
+def NN_baseline():
 	# create model
 	model = Sequential()
 	model.add(Dense(60, input_dim=30, kernel_initializer='normal', activation='relu'))
@@ -102,7 +102,7 @@ def create_baseline():
 	return model
 
 
-def create_smaller():
+def NN_small():
 	# create model
 	model = Sequential()
 	model.add(Dense(15, input_dim=30, kernel_initializer='normal', activation='relu'))
@@ -112,7 +112,7 @@ def create_smaller():
 	return model
 
 
-def create_larger():
+def NN_large():
 	# create model
 	model = Sequential()
 	model.add(Dense(60, input_dim=30, kernel_initializer='normal', activation='relu'))
@@ -123,11 +123,8 @@ def create_larger():
 	return model
 
 #-----------------------------------
-
-
-
-
-if __name__ == '__main__':
+# run the process 
+def main(build_fn):
 	df, X, y  = get_data()
 	print ('X :', X )
 	print (' y :', y)
@@ -137,20 +134,28 @@ if __name__ == '__main__':
 	####  DL #### 
 	seed = 7
 	np.random.seed(seed)
-	# evaluate model with standardized dataset
-	#estimator = KerasClassifier(build_fn=create_baseline, epochs=100, batch_size=5, verbose=0)
-	#kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
-	#results = cross_val_score(estimator, X_train_undersample, y_train_undersample, cv=kfold)
-	#print("Results: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
 	# https://machinelearningmastery.com/binary-classification-tutorial-with-the-keras-deep-learning-library/
 	estimators = []
+	# evaluate model with standardized dataset
 	estimators.append(('standardize', StandardScaler()))
-	estimators.append(('mlp', KerasClassifier(build_fn=create_larger, epochs=200, batch_size=5, verbose=0)))
+	estimators.append(('mlp', KerasClassifier(build_fn=build_fn, epochs=100, batch_size=5, verbose=0)))
 	pipeline = Pipeline(estimators)
 	kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
 	results = cross_val_score(pipeline, X_train_undersample, y_train_undersample, cv=kfold)
 	print("Standardized: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
 	print (results)
+	return results
+
+
+
+
+
+#-----------------------------------
+
+
+
+if __name__ == '__main__':
+	main(NN_large)
 
 
 
