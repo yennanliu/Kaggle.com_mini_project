@@ -27,9 +27,16 @@ as fraud (predict), but NEVER miss any fraud (actual) case (fraud actual, but pr
   - Confusion matrix : 
   ```python
   # given a confusion matrix :
-   [[90  10]
-   [ 10 90]]
-  # The x-asis means "true group" ; while y-axis means "predict group"
+    0     1 
+    ---------
+  0| [[90  10]      
+  1| [ 10 90]]
+
+
+  (  represent as [[90  10]    below 
+                  [ 10 90]]           )     
+
+  # The x-axis means "true group" ; while y-axis means "predict group"
   # i.e. [90  10] means 90 count of data is in group 0 and predicted as group 0 ; 10 count of data is in group 1 and predicted as group 0 
   # i.e. [10  90] means 10 count of data is in group 0 and predicted as group 1 ; 90 count of data is in group 1 and predicted as group 1
   # So, we can SAY : over all 200 (90+10+10+90) data sample, 
@@ -42,7 +49,7 @@ as fraud (predict), but NEVER miss any fraud (actual) case (fraud actual, but pr
 
   - Accuracy = (TP+TN)/total : 
   ```python 
-  # Again, given confusion matrix as above :
+  # Again, given confusion matrix as below :
   [[90  10]
   [ 10 90]]
   # The "OVERALL accuracy" of the model can be defined :
@@ -75,8 +82,8 @@ as fraud (predict), but NEVER miss any fraud (actual) case (fraud actual, but pr
   ```
   - ROC curve  (receiver operating characteristic)
   ```python
-  # The curve with different thresholds,input thresholds, and get 
-  # false_positive_rate as x, and true_positive_rate as y
+  # The curve from input thresholds, and output (x,y) as 
+  # (false_positive_rate,true_positive_rate) (different thresholds)
   # i.e. 
   # true_positive_rate, false_positive_rate = ROC(thresholds)
   # calculate the true_positive_rate, false_positive_rate with "different thresholds", and plot all above as ROC curve
