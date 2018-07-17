@@ -156,7 +156,7 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
 # Ref 
 - https://www.kaggle.com/mlg-ulb/creditcardfraud
 - http://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/
-
+- https://www.kaggle.com/ntnu-testimon/paysim1/kernels
 
 
 
