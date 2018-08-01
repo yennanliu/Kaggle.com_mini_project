@@ -36,7 +36,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
-#import xgboost as xgb
+import xgboost as xgb
 
 
 # ------------- help func  ------------- 
@@ -186,7 +186,54 @@ def main():
     Acc[name] = accuracy_score(ytest,pred)
     confusion_mat[name] = confusion_matrix(ytest,pred)
     predictions[name]=pred
-    print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))         
+    print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
+    # ----------------  4)  Random Forest ----------------
+    print (' # 5) Random Forest ')  
+    name = 'RF'
+    RF = RandomForestClassifier(n_estimators =80,class_weight ='balanced')
+    RF.fit(Xtrain,ytrain)
+    pred = RF.predict(Xtest)
+    F1score[name]= f1_score(ytest,pred)
+    Acc[name] = accuracy_score(ytest,pred)
+    confusion_mat[name] = confusion_matrix(ytest,pred)
+    predictions[name]=pred
+    print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))  
+    # ----------------  6)  AdaBoost ----------------
+    print (' # 6) AdaBoost ')  
+    name = 'AdaBoost'
+    Ada = AdaBoostClassifier(n_estimators=80, random_state=1)
+    Ada.fit(Xtrain,ytrain)
+    pred = Ada.predict(Xtest)
+    F1score[name]= f1_score(ytest,pred)
+    Acc[name] = accuracy_score(ytest,pred)
+    confusion_mat[name] = confusion_matrix(ytest,pred)
+    predictions[name]=pred
+    print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))  
+    # ----------------  7)  XGBoost ----------------
+    print (' # 7) XGBoost ')   
+    #  XGBoost, a faster and more efficient version of GBM.
+    data_tr  = xgb.DMatrix(Xtrain, label=ytrain)
+    val_scores = []
+    list_max_depth =[6,9,14]
+    list_subsample = [0.8,1]
+    for max_depth in list_max_depth:
+        for subsample in list_subsample:
+            parms = {'max_depth':max_depth, #maximum depth of a tree
+                     'objective':'binary:logistic',
+                     'eta'      :0.1,
+                     'subsample':subsample,#SGD will use this percentage of data
+                     'lambda '  :1.5, #L2 regularization term,>1 more conservative
+                     'colsample_bytree ':0.8,
+                     'nthread'  :3}  #number of cpu core to use
+            result = xgb.cv(parms, data_tr, 
+                                num_boost_round=1000,
+                                early_stopping_rounds=20,# early stop if cv result is not improving
+                                nfold=3,metrics="error")
+            val_scores.append([result['test-error-mean'].iloc[-1],max_depth,subsample,len(result)-20])
+            #len(result) will be our num_boot_round in the test set
+    val_scores = np.array(val_scores)
+    print('The best scores happens on:',val_scores[val_scores[:,0]==min(val_scores[:,0]),1:],
+          ', where accuracy =',val_scores[val_scores[:,0]==min(val_scores[:,0]),0])  
 
 
 
