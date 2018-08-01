@@ -85,7 +85,8 @@ F1score = {}
 confusion_mat={}
 predictions = {}
 # ---- ML ----
-# 1) SVM 
+# ---------------- 1) SVM  ----------------
+print (' # 1) SVM  ')
 val_scores = []
 listc = np.linspace(0.5,3,num=4)
 listgamma = np.linspace(0.5,3,num=4)
@@ -122,8 +123,27 @@ Acc[name] = accuracy_score(ytest,pred)
 confusion_mat[name] = confusion_matrix(ytest,pred)
 predictions[name]=pred
 print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
-
-
+# ----------------  2) Naive Bayes ----------------
+print (' # 2) Naive Bayes ')
+from sklearn.naive_bayes import MultinomialNB
+val_scores = []
+listalpha = np.linspace(0.01,1,num=20)
+for i in listalpha:
+    MNB = MultinomialNB(alpha=i)# alpha is Laplace smoothing parameter
+    scores = cross_val_score(MNB, Xtrain, ytrain,scoring='f1')
+    val_scores.append([np.mean(scores),i])
+val_scores = np.array(val_scores)
+print('The best scores happens on:',val_scores[val_scores[:,0]==max(val_scores[:,0]),1:],
+      ', where F1 =',val_scores[val_scores[:,0]==max(val_scores[:,0]),0])
+name = 'MNB'
+MNB = MultinomialNB(alpha=0.27052632)
+MNB.fit(Xtrain,ytrain)
+pred = MNB.predict(Xtest.toarray())
+F1score[name]= f1_score(ytest,pred)
+Acc[name] = accuracy_score(ytest,pred)
+confusion_mat[name] = confusion_matrix(ytest,pred)
+predictions[name]=pred
+print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
 
 
 
