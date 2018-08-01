@@ -187,7 +187,7 @@ def main():
     confusion_mat[name] = confusion_matrix(ytest,pred)
     predictions[name]=pred
     print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
-    # ----------------  4)  Random Forest ----------------
+    # ----------------  5)  Random Forest ----------------
     print (' # 5) Random Forest ')  
     name = 'RF'
     RF = RandomForestClassifier(n_estimators =80,class_weight ='balanced')
