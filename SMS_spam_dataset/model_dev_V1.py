@@ -145,6 +145,28 @@ def main():
     confusion_mat[name] = confusion_matrix(ytest,pred)
     predictions[name]=pred
     print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
+    # ----------------  3) Decision Tree ----------------
+    print (' # 3) Decision Tree ')
+    val_scores = []
+    for i in range(2,21):
+        DT = DecisionTreeClassifier(min_samples_split=i, random_state=1,class_weight='balanced')
+        scores = cross_val_score(DT, Xtrain, ytrain,scoring='f1')
+        val_scores.append([np.mean(scores),i])
+        val_scores = np.array(val_scores)
+    print('The best scores happens on:',val_scores[val_scores[:,0]==max(val_scores[:,0]),1:],
+    ', where F1 =',val_scores[val_scores[:,0]==max(val_scores[:,0]),0])
+    name = 'DT'
+    bset_samples_split = int(val_scores[val_scores[:,0]==max(val_scores[:,0]),1:])
+    DT = DecisionTreeClassifier(min_samples_split=bset_samples_split, random_state=1,class_weight='balanced')
+    DT.fit(Xtrain,ytrain)
+    pred = DT.predict(Xtest.toarray())
+    F1score[name]= f1_score(ytest,pred)
+    Acc[name] = accuracy_score(ytest,pred)
+    confusion_mat[name] = confusion_matrix(ytest,pred)
+    predictions[name]=pred
+    print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
+
+
 
 
 # ------------- run the process  ------------- 
