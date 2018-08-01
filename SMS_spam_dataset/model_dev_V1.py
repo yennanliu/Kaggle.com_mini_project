@@ -165,6 +165,29 @@ def main():
     confusion_mat[name] = confusion_matrix(ytest,pred)
     predictions[name]=pred
     print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
+    # ----------------  4) Logistic Regression ----------------
+    print (' # 4) Logistic Regression ')
+    list_C = np.linspace(0.1,3,num=20)
+    val_scores = []
+    for p in ('l1','l2'):
+        for c in list_C:
+            LR = LogisticRegression(penalty=p,C=c,class_weight='balanced')
+            scores = cross_val_score(LR, Xtrain, ytrain,scoring='f1')
+            val_scores.append([np.mean(scores),p,c])
+    val_scores = np.array(val_scores)
+    print('The best scores happens on:',val_scores[val_scores[:,0]==max(val_scores[:,0]),1:],
+    ', where F1 =',val_scores[val_scores[:,0]==max(val_scores[:,0]),0])   
+    name = 'LR'
+    best_l2_c = float(val_scores[val_scores[:,0]==max(val_scores[:,0]),1:][0][1])
+    LR = LogisticRegression(penalty='l2',C=best_l2_c,class_weight='balanced')
+    LR.fit(Xtrain,ytrain)
+    pred = LR.predict(Xtest)
+    F1score[name]= f1_score(ytest,pred)
+    Acc[name] = accuracy_score(ytest,pred)
+    confusion_mat[name] = confusion_matrix(ytest,pred)
+    predictions[name]=pred
+    print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))         
+
 
 
 
