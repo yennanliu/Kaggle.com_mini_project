@@ -152,7 +152,7 @@ def main():
         DT = DecisionTreeClassifier(min_samples_split=i, random_state=1,class_weight='balanced')
         scores = cross_val_score(DT, Xtrain, ytrain,scoring='f1')
         val_scores.append([np.mean(scores),i])
-        val_scores = np.array(val_scores)
+    val_scores = np.array(val_scores)
     print('The best scores happens on:',val_scores[val_scores[:,0]==max(val_scores[:,0]),1:],
     ', where F1 =',val_scores[val_scores[:,0]==max(val_scores[:,0]),0])
     name = 'DT'
