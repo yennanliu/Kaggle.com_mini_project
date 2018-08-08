@@ -184,7 +184,7 @@ def main():
 	# ----- model 3  -----
 	#model = CNN_model_V1()
 	# ----- model 3  -----
-	model = CNN_model_V2()
+	#model = CNN_model_V2()
 	# ----- model 4  -----
 	model = CNN_model_V3()
 	model.summary()
