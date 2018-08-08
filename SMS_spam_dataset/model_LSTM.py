@@ -8,9 +8,12 @@ https://www.kaggle.com/kredy10/simple-lstm-for-text-classification
 """
 
 
+
 # OP 
 import pandas as pd
 import numpy as np
+import time
+
 # ML 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
@@ -21,6 +24,10 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing import sequence
 from keras.utils import to_categorical
 from keras.callbacks import EarlyStopping
+from keras.models import Sequential
+from keras.layers import Conv1D, GlobalMaxPooling1D
+from keras import metrics
+
 
 
 # ---------------------------
@@ -50,7 +57,7 @@ def LSTM_model_V2():
     model.add(Dense(256, activation='relu'))
     model.add(Dropout(0.2))
     model.add(Dense(1, activation='sigmoid'))
-    model.summary()
+    #model.summary()
     model.compile(loss='binary_crossentropy',
               optimizer='adam',
               metrics=['acc',metrics.binary_accuracy])
@@ -82,9 +89,10 @@ def main():
 	sequences_matrix = sequence.pad_sequences(sequences,maxlen=max_len)
 	# compile the model and print its architecture
 	print (' # ------------  compile the model and print its architecture  ------------ ')
-	model = LSTM_model()
+	#model = LSTM_model()
+	model = LSTM_model_V2()
 	model.summary()
-	model.compile(loss='binary_crossentropy',optimizer=RMSprop(),metrics=['accuracy'])
+	#model.compile(loss='binary_crossentropy',optimizer=RMSprop(),metrics=['accuracy'])
 	# train on train set 
 	print (' # ------------  train on train set   ------------ ')
 	model.fit(sequences_matrix,Y_train,batch_size=128,epochs=10,
