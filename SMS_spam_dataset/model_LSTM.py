@@ -33,6 +33,11 @@ from keras import metrics
 # ---------------------------
 # help func 
 
+
+# ---------------------------
+
+
+
 # DL 
 def LSTM_model():
 	max_words = 1000
@@ -46,13 +51,14 @@ def LSTM_model():
 	layer = Dense(1,name='out_layer')(layer)
 	layer = Activation('sigmoid')(layer)
 	model = Model(inputs=inputs,outputs=layer)
+	model.compile(loss='binary_crossentropy',optimizer=RMSprop(),metrics=['accuracy'])
 	return model
 
 
 def LSTM_model_V2():
     max_len = 150
     model = Sequential()
-    model.add(Dense(1000, activation='relu', input_shape=[max_len]))
+    model.add(Dense(10000, activation='relu', input_shape=[max_len]))
     model.add(Dropout(0.2))
     model.add(Dense(256, activation='relu'))
     model.add(Dropout(0.2))
@@ -89,10 +95,12 @@ def main():
 	sequences_matrix = sequence.pad_sequences(sequences,maxlen=max_len)
 	# compile the model and print its architecture
 	print (' # ------------  compile the model and print its architecture  ------------ ')
-	#model = LSTM_model()
-	model = LSTM_model_V2()
-	model.summary()
+	#1)  ----- model 1  -----
+	model = LSTM_model()
 	#model.compile(loss='binary_crossentropy',optimizer=RMSprop(),metrics=['accuracy'])
+	#2)  ----- model 2  -----
+	#model = LSTM_model_V2()
+	model.summary()
 	# train on train set 
 	print (' # ------------  train on train set   ------------ ')
 	model.fit(sequences_matrix,Y_train,batch_size=128,epochs=10,
