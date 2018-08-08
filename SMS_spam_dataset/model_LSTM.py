@@ -70,6 +70,36 @@ def LSTM_model_V2():
     print('compile done')
     return model
 
+
+
+def CNN_model_V1():   
+    max_len=150
+    model = Sequential()
+    # we start off with an efficient embedding layer which maps
+    # our vocab indices into embedding_dims dimensions
+    # 1000 is num_max
+    model.add(Embedding(1000,
+                        20,
+                        input_length=max_len))
+    model.add(Dropout(0.2))
+    model.add(Conv1D(64,
+                     3,
+                     padding='valid',
+                     activation='relu',
+                     strides=1))
+    model.add(GlobalMaxPooling1D())
+    model.add(Dense(256))
+    model.add(Dropout(0.2))
+    model.add(Activation('relu'))
+    model.add(Dense(1))
+    model.add(Activation('sigmoid'))
+    model.summary()
+    model.compile(loss='binary_crossentropy',
+                  optimizer='adam',
+                  metrics=['acc',metrics.binary_accuracy])
+    return model
+
+
 # ---------------------------
 # main func 
 
@@ -95,11 +125,13 @@ def main():
 	sequences_matrix = sequence.pad_sequences(sequences,maxlen=max_len)
 	# compile the model and print its architecture
 	print (' # ------------  compile the model and print its architecture  ------------ ')
-	#1)  ----- model 1  -----
-	model = LSTM_model()
+	# ----- model 1  -----
+	#model = LSTM_model()
 	#model.compile(loss='binary_crossentropy',optimizer=RMSprop(),metrics=['accuracy'])
-	#2)  ----- model 2  -----
+	# ----- model 2  -----
 	#model = LSTM_model_V2()
+	# ----- model 3  -----
+	model = CNN_model_V1()
 	model.summary()
 	# train on train set 
 	print (' # ------------  train on train set   ------------ ')
