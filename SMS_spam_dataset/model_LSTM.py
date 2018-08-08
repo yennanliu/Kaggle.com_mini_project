@@ -42,6 +42,21 @@ def LSTM_model():
 	return model
 
 
+def LSTM_model_V2():
+    max_len = 150
+    model = Sequential()
+    model.add(Dense(1000, activation='relu', input_shape=[max_len]))
+    model.add(Dropout(0.2))
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.2))
+    model.add(Dense(1, activation='sigmoid'))
+    model.summary()
+    model.compile(loss='binary_crossentropy',
+              optimizer='adam',
+              metrics=['acc',metrics.binary_accuracy])
+    print('compile done')
+    return model
+
 # ---------------------------
 # main func 
 
