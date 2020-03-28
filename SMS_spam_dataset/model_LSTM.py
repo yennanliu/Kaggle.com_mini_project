@@ -1,13 +1,9 @@
-# python 3
-
 """
 modify from  
 
 https://www.kaggle.com/kredy10/simple-lstm-for-text-classification
 
 """
-
-
 
 # OP 
 import pandas as pd
@@ -28,17 +24,6 @@ from keras.models import Sequential
 from keras.layers import Conv1D, GlobalMaxPooling1D
 from keras import metrics
 
-
-
-# ---------------------------
-# help func 
-
-
-# ---------------------------
-
-
-
-# DL 
 def LSTM_model():
 	max_words = 1000
 	max_len = 150
@@ -54,7 +39,6 @@ def LSTM_model():
 	model.compile(loss='binary_crossentropy',optimizer=RMSprop(),metrics=['accuracy'])
 	return model
 
-
 def LSTM_model_V2():
     max_len = 150
     model = Sequential()
@@ -69,8 +53,6 @@ def LSTM_model_V2():
               metrics=['acc',metrics.binary_accuracy])
     print('compile done')
     return model
-
-
 
 def CNN_model_V1():   
     max_len=150
@@ -98,8 +80,6 @@ def CNN_model_V1():
                   optimizer='adam',
                   metrics=['acc',metrics.binary_accuracy])
     return model
-
-
 
 def CNN_model_V2(): 
     max_len=150
@@ -149,12 +129,6 @@ def CNN_model_V3():
                   metrics=['acc',metrics.binary_accuracy])
     return model
 
-
-
-
-# ---------------------------
-# main func 
-
 def main():
 	df = pd.read_csv('spam.csv', delimiter=',',encoding='latin-1')
 	df = df.loc[:,['v1','v2']]
@@ -199,18 +173,5 @@ def main():
 	accr = model.evaluate(test_sequences_matrix,Y_test)
 	print('Test set\n  Loss: {:0.3f}\n  Accuracy: {:0.3f}'.format(accr[0],accr[1]))
 
-
-
-
-
-
-
-
-# ---------------------------
 if __name__ == '__main__':
 	main()
-
-
-
-
-

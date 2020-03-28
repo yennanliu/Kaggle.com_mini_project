@@ -1,12 +1,8 @@
-# python 3 
-
 """
-
 Credit 
 
 https://wayinone.github.io/SMS
 https://www.kaggle.com/onlyshadow/spam-or-ham-7-machine-learning-tools-walk-through
-
 """ 
 
 # OP 
@@ -22,9 +18,6 @@ import nltk
 import string
 #import matplotlib.pyplot as plt
 
-
-# ML 
-
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score,f1_score
@@ -37,11 +30,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 import xgboost as xgb
-
-
-# ------------- help func  ------------- 
-# HELP FUNC 
-
 
 class stemmed_tfidf():
     def __init__(self,max_features=5000):
@@ -66,9 +54,6 @@ class stemmed_tfidf():
         #a = [w for w in tokens if not w in stopwords.words('english')]# remove common no meaning words
         return ' '.join([self.ps.stem(w) for w in tokens])# e.g. 'desks'->'desk'
 
-
-
-# ------------- main func  ------------- 
 def main():
     df = pd.read_csv('spam.csv', encoding='latin-1')
     df = df.loc[:,['v1','v2']]
@@ -233,17 +218,5 @@ def main():
     predictions[name]=pred
     print(name+': Accuracy=%1.3f, F1=%1.3f'%(Acc[name],F1score[name]))
 
-
-
-# ------------- run the process  ------------- 
-
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-

@@ -3,7 +3,6 @@ import pandas as pd, numpy as np
 %pylab inline
 import seaborn 
 
-
 '''
 FEATURE:
 1. total  # of bids that bidder have made 
@@ -12,7 +11,6 @@ FEATURE:
 4. How many IP, phone that every bidder use totally
 
 '''
-
 
 df_bids = pd.read_csv('~/Desktop/Facebook _4_robot/bids.csv')
 df_train = pd.read_csv('~/Desktop/Facebook _4_robot/train.csv')
@@ -26,7 +24,6 @@ train_merge = pd.merge(df_train, df_bids , how = 'left', on =['bidder_id'])
 df_submission = pd.read_csv('~/Desktop/Facebook _4_robot/sampleSubmission.csv')
 test_merge = pd.merge(df_test, df_bids , how = 'left', on =['bidder_id'])
 test_merge = pd.merge(test_merge, df_submission , how = 'left', on =['bidder_id'])
-
 
 #table = pd.pivot_table(train_merge, index = ['bidder_id', 'time'], aggfunc = np.size)
 (test_merge.groupby('time').count())['bid_id'].plot()
@@ -55,12 +52,6 @@ def feature_engineering(data):
 	df_feature = pd.merge(df_feature , ave_gap_of_time_in_2_bids(data), how = 'left', on=['bidder_id'])
 	return df_feature
 
-
-
-
-
-
-
 def total_number_bid_bidder_made(data):
 	total_number_bid_bidder = data.groupby('bidder_id').count()['payment_account']
 	total_number_bid_bidder = pd.DataFrame(total_number_bid_bidder).reset_index()
@@ -69,14 +60,12 @@ def total_number_bid_bidder_made(data):
 	#return pd.merge(data, total_number_bid_bidder_made(data), how = 'inner', on= ['bidder_id'])
 	#return data.groupby('bidder_id').count()['payment_account']
 
-
 def avg_number_bid_bidder_made(data):
 	#((data.groupby(['bidder_id', 'auction']).count()['outcome'].reset_index()).groupby('bidder_id').count())\
 	avg_number_bid_bidder = (data.groupby(['bidder_id']).count()['outcome'])/(((data.groupby(['bidder_id', 'auction']).count()['outcome'].reset_index()).groupby('bidder_id').count()['outcome']))
 	avg_number_bid_bidder = pd.DataFrame(avg_number_bid_bidder).reset_index()
 	avg_number_bid_bidder.columns =['bidder_id', 'avg_number_bid_bidder_made']
 	return avg_number_bid_bidder
-
 
 def ave_gap_of_time_in_2_bids(data):
 	ave_gap_of_time = [[] for i in range(2)]
@@ -89,12 +78,6 @@ def ave_gap_of_time_in_2_bids(data):
 			df.columns = ['bidder_id','gap_time_max_min']
 	return df 
 
-
-
-
-
-
-
 def time_range_all(datak):
 
 	time_range=[[] for i in range(2)]
@@ -105,8 +88,6 @@ def time_range_all(datak):
 		df = pd.DataFrame(time_range).transpose()
 		#data.time_range_all = time_range
 	return df
-
-
 
 def avg_number_bid_per_auction(data):
 	data0 = (data[data['outcome'] == 0])
@@ -133,12 +114,6 @@ def avg_number_bid_per_auction(data):
 	#xxx[xxx <100].hist(bins = 30 , normed=True)
 	#yyy[yyy <100].hist(bins = 30 , normed=True)
 
-
-
-
-
-
-
 def time_interval_auction(auction,bidder_id):
 	#list(set(data1.bidder_id))
  	sample = (train_merge[train_merge['bidder_id'] == bidder_id ])
@@ -154,8 +129,6 @@ def time_interval_auction(auction,bidder_id):
  	plt.show()
  	return gap 
 
-
-
 def time_interval(bidder_id):
 	#list(set(data1.bidder_id))
  	sample = (train_merge[train_merge['bidder_id'] == bidder_id ])['time']
@@ -168,9 +141,6 @@ def time_interval(bidder_id):
  	gap.plot()
  	plt.show()
  	return gap 
-
-
-
 
 def avg_time_interval(datak,outcome):
 	avg_value = []
@@ -187,9 +157,7 @@ def avg_time_interval(datak,outcome):
 	return pd.DataFrame(avg_value)
 	#return gap
 
-
 ###Feature Engineering###
-
 def time_range_all(datak):
 	time_range=[]
 	for k in list(set(datak.auction)):
@@ -199,8 +167,6 @@ def time_range_all(datak):
 		#data.time_range_all = time_range
 	return (k, time_range)
 
-#def resting_time():
-
 def time_gap_final_bid_end_auction(datak,bid_id):
 	time_gap = []
 	for k in list(set(datak.auction)):
@@ -208,14 +174,3 @@ def time_gap_final_bid_end_auction(datak,bid_id):
 		data_b = datak[datak['bid_id'] == bid_id]
 		time_gap.append(float(max(data_a.time)) - float(max(data_b.time)))
 		return k, time_gap
-
-
-
-
-
-
-
-
-
-
-
